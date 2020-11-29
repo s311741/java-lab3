@@ -16,7 +16,7 @@ public final class Environment implements IEnvironment {
 	public void addThing (Thing t) {
 		this.contents.add(t);
 		if (t.getEnvironment() != this) {
-			throw new RuntimeException("Tried to add a building to several environments at once");
+			throw new RuntimeException("Tried to add something to several environments at once");
 		}
 	}
 
@@ -37,7 +37,7 @@ public final class Environment implements IEnvironment {
 	public int hashCode () {
 		int hash = this.getClass().hashCode() ^ this.contents.size();
 		for (Thing t: this.contents) {
-			hash ^= t.hashCode() + (hash << 6) + (hash >> 2);
+			hash ^= t.hashCode() + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		}
 		return hash;
 	}
