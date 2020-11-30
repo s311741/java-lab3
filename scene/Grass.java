@@ -1,16 +1,18 @@
 package scene;
 
 public final class Grass extends Thing implements IColored {
-	boolean isWithered;
-
-	public Grass (IEnvironment env, boolean isWithered) {
+	public Grass (IEnvironment env) {
 		super(env);
-		this.isWithered = isWithered;
+	}
+
+	public boolean isWithered () {
+		IEnvironment.Season s = this.env.season();
+		return s == IEnvironment.Season.SUMMER || s == IEnvironment.Season.SPRING;
 	}
 
 	@Override
 	public Color getColor () {
-		return this.isWithered ? Color.GREY : Color.GREEN;
+		return this.isWithered() ? Color.GREY : Color.GREEN;
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public final class Grass extends Thing implements IColored {
 	@Override
 	public int hashCode () {
 		int r = 271;
-		if (this.isWithered) {
+		if (this.isWithered()) {
 			r += 257;
 		}
 		return this.getClass().hashCode() ^ r;

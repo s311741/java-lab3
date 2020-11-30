@@ -12,7 +12,7 @@ public class Main {
 		House house = new House(env);
 		house.setRoofAttachment(flag);
 
-		Grass grass = new Grass(env, false);
+		Grass grass = new Grass(env);
 		Jessamine jess = new Jessamine(env);
 
 		Bridge bridge = new Bridge(env);
@@ -20,11 +20,14 @@ public class Main {
 
 		River river = new River(env);
 
+		Character ch = new Character(env, grass);
+
 		PrintStream s = System.out;
 		s.println("Before our arrival:\n");
 		env.print(s);
 
-		env.startWalkingFastHere();
+		ch.walkTo(river, 10.0f);
+
 		s.println("\nAfter our arrival:\n");
 		env.print(s);
 	}

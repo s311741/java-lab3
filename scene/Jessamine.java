@@ -8,8 +8,7 @@ public final class Jessamine extends Thing {
 	@Override
 	public String toString () {
 		IEnvironment.Season s = this.env.season();
-		return (s == IEnvironment.Season.SPRING || s == IEnvironment.Season.SUMMER
-				? "blossoming " : "")
-			+ "jessamine";
+		boolean isBlossoming = (s == IEnvironment.Season.SPRING || s == IEnvironment.Season.SUMMER);
+		return (isBlossoming ? "blossoming " : "") + "jessamine";
 	}
 }

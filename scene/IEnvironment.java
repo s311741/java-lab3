@@ -5,7 +5,10 @@ public interface IEnvironment {
 
 	boolean isWindy ();
 	float daytime ();
+
 	float vibrationAmplitude ();
+	Thing vibrationSource ();
+	void createVibrationAt (Thing where, float amplitude);
 
 	public enum Season {
 		WINTER,

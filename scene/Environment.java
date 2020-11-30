@@ -5,23 +5,23 @@ import java.io.PrintStream;
 
 public final class Environment implements IEnvironment {
 	private ArrayList<Thing> contents;
-	private float amplitude;
+
+	private float vibrAmp;
+	private Thing vibrSrc;
 
 	public Environment () {
 		this.contents = new ArrayList<Thing>();
-		this.amplitude = 0.0f;
+		this.vibrAmp = 0.0f;
+		this.vibrSrc = null;
 	}
 
 	@Override
 	public void addThing (Thing t) {
-		this.contents.add(t);
-		if (t.getEnvironment() != this) {
+		IEnvironment e = t.getEnvironment();
+		if (e != null && e != this) {
 			throw new RuntimeException("Tried to add something to several environments at once");
 		}
-	}
-
-	public void startWalkingFastHere () {
-		this.amplitude += 80.0;
+		this.contents.add(t);
 	}
 
 	public void print (PrintStream s) {
@@ -58,7 +58,18 @@ public final class Environment implements IEnvironment {
 	}
 
 	@Override
+	public void createVibrationAt (Thing where, float amplitude) {
+		this.vibrSrc = where;
+		this.vibrAmp = amplitude;
+	}
+
+	@Override
 	public float vibrationAmplitude () {
-		return this.amplitude;
+		return this.vibrAmp;
+	}
+
+	@Override
+	public Thing vibrationSource () {
+		return this.vibrSrc;
 	}
 }

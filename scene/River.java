@@ -8,7 +8,7 @@ public final class River extends Thing {
 	@Override
 	public String toString () {
 		String s = "";
-		if (this.env.vibrationAmplitude() > 50.0f) {
+		if (this.env.vibrationSource() == this && this.env.vibrationAmplitude() > 50.0f) {
 			s += "storming ";
 		}
 		return s + "river";
