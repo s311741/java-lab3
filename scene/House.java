@@ -16,15 +16,23 @@ public final class House extends Thing {
 	}
 
 	@Override
-	public int hashCode () {
-		return this.getClass().hashCode() ^ this.roofAttachment.hashCode();
+	public String toString () {
+		String result = "house";
+		if (roofAttachment != null)
+			result += " with " + roofAttachment.toString() + " atop its roof";
+		return result;
 	}
 
 	@Override
-	public String toString () {
-		String r = "house";
-		if (roofAttachment != null)
-			r += " with " + roofAttachment.toString() + " atop its roof";
-		return r;
+	public int hashCode () {
+		return super.hashCode() ^ this.roofAttachment.hashCode();
+	}
+
+	@Override
+	public boolean equals (Object other) {
+		if (!(other instanceof House) || other.hashCode() != this.hashCode()) {
+			return false;
+		}
+		return ((House) other).getRoofAttachment().equals(this.getRoofAttachment());
 	}
 }

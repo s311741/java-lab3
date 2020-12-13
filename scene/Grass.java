@@ -1,6 +1,7 @@
 package scene;
 
 public final class Grass extends Thing implements IColored {
+
 	public Grass (IEnvironment env) {
 		super(env);
 	}
@@ -27,10 +28,10 @@ public final class Grass extends Thing implements IColored {
 
 	@Override
 	public int hashCode () {
-		int r = 271;
+		int hash = super.hashCode();
 		if (this.isWithered()) {
-			r += 257;
+			hash += 257;
 		}
-		return this.getClass().hashCode() ^ r;
+		return hash;
 	}
 }

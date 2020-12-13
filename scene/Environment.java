@@ -34,15 +34,6 @@ public final class Environment implements IEnvironment {
 	}
 
 	@Override
-	public int hashCode () {
-		int hash = this.getClass().hashCode() ^ this.contents.size();
-		for (Thing t: this.contents) {
-			hash ^= t.hashCode() + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-		}
-		return hash;
-	}
-
-	@Override
 	public boolean isWindy () {
 		return true;
 	}
@@ -71,5 +62,35 @@ public final class Environment implements IEnvironment {
 	@Override
 	public Thing vibrationSource () {
 		return this.vibrSrc;
+	}
+
+	@Override
+	public int hashCode () {
+		int hash = this.getClass().hashCode() ^ this.contents.size();
+		for (Thing t: this.contents) {
+			hash ^= t.hashCode() + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		}
+		return hash;
+	}
+
+	@Override
+	public boolean equals (Object other) {
+		if (!(other instanceof Environment) || other.hashCode() != this.hashCode()) {
+			return false;
+		}
+
+		Environment otherEnv = (Environment) other;
+		if (otherEnv.contents.size() != this.contents.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < this.contents.size(); i++) {
+			if (!this.contents.get(i).equals(otherEnv.contents.get(i))) {
+				return false;
+			}
+		}
+
+		return this.vibrationAmplitude() == otherEnv.vibrationAmplitude()
+			&& this.vibrationSource().equals(otherEnv.vibrationSource());
 	}
 }

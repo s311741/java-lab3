@@ -9,4 +9,9 @@ public final class Flag extends Thing {
 	public String toString () {
 		return (this.env.isWindy() ? "waving " : "") + "flag";
 	}
+
+	@Override
+	public boolean equals (Object other) {
+		return other instanceof Flag;
+	}
 }

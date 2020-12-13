@@ -15,13 +15,7 @@ public abstract class Thing {
 	}
 
 	@Override
-	public boolean equals (Object other) {
-		return this.getClass().hashCode() == other.getClass().hashCode()
-			&& this.hashCode() == other.hashCode();
-	}
-
-	@Override
 	public int hashCode () {
-		return this.getClass().hashCode() ^ (this.isRootElement ? 1 : 0);
+		return super.hashCode() ^ this.getClass().hashCode();
 	}
 }

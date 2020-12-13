@@ -8,11 +8,6 @@ public final class Bridge extends Thing implements IColored {
 	}
 
 	@Override
-	public String toString () {
-		return this.getColor().toString() + " bridge";
-	}
-
-	@Override
 	public void setColor (Color c) {
 		this.color = c;
 	}
@@ -23,7 +18,20 @@ public final class Bridge extends Thing implements IColored {
 	}
 
 	@Override
+	public String toString () {
+		return this.getColor().toString() + " bridge";
+	}
+
+	@Override
 	public int hashCode () {
 		return super.hashCode() ^ this.color.hashCode();
+	}
+
+	@Override
+	public boolean equals (Object other) {
+		if (!(other instanceof Bridge) || other.hashCode() != this.hashCode()) {
+			return false;
+		}
+		return ((Bridge) other).getColor() == this.getColor();
 	}
 }

@@ -11,4 +11,9 @@ public final class Jessamine extends Thing {
 		boolean isBlossoming = (s == IEnvironment.Season.SPRING || s == IEnvironment.Season.SUMMER);
 		return (isBlossoming ? "blossoming " : "") + "jessamine";
 	}
+
+	@Override
+	public boolean equals (Object other) {
+		return other instanceof Jessamine;
+	}
 }

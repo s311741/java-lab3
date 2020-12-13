@@ -13,4 +13,9 @@ public final class River extends Thing {
 		}
 		return s + "river";
 	}
+
+	@Override
+	public boolean equals (Object other) {
+		return other instanceof River;
+	}
 }

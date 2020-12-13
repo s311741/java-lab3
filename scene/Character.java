@@ -14,10 +14,13 @@ public final class Character extends Thing {
 
 	public void walkTo (Thing t, float walkSpeed) {
 		if (t.getEnvironment() != this.getEnvironment()) {
-			throw new RuntimeException("Tried to move character somewhere in another environment");
+			throw new RuntimeException("Tried to walk towards somewhere in another environment");
 		}
 		if (t == this) {
-			throw new RuntimeException("Tried to move character near themselves");
+			throw new RuntimeException("Tried to walk towards themselves");
+		}
+		if (t == null) {
+			throw new RuntimeException("Tried to walk towards nowhere");
 		}
 
 		if (this.proximity == t) {
@@ -31,11 +34,29 @@ public final class Character extends Thing {
 		this.env.createVibrationAt(this.proximity, (float) Math.pow(walkSpeed, 2.0));
 	}
 
+	public Thing nearWhat () {
+		return this.proximity;
+	}
+
+	@Override
 	public String toString () {
 		String r = "Main character";
 		if (this.proximity != null) {
 			r += ", who is near " + this.proximity.toString();
 		}
 		return r;
+	}
+
+	@Override
+	public int hashCode () {
+		return super.hashCode() ^ this.proximity.hashCode();
+	}
+
+	@Override
+	public boolean equals (Object other) {
+		if (!(other instanceof Character) || other.hashCode() != this.hashCode()) {
+			return false;
+		}
+		return ((Character) other).nearWhat().equals(this.nearWhat());
 	}
 }
