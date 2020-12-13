@@ -2,13 +2,12 @@ package scene;
 
 public final class Grass extends Thing implements IColored {
 
-	public Grass (IEnvironment env) {
-		super(env);
-	}
+	public Grass (Environment e, String id) { super(e, id); }
+	public Grass (Environment e) { this(e, "grass"); }
 
 	public boolean isWithered () {
-		IEnvironment.Season s = this.env.season();
-		return s == IEnvironment.Season.SUMMER || s == IEnvironment.Season.SPRING;
+		Environment.Season s = this.env.season();
+		return s == Environment.Season.SUMMER || s == Environment.Season.SPRING;
 	}
 
 	@Override

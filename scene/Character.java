@@ -1,16 +1,18 @@
 package scene;
 
+import java.util.HashMap;
+
 public final class Character extends Thing {
 	private Thing proximity;
 
-	public Character (IEnvironment e, Thing initialProximity) {
-		super(e);
+	public Character (Environment e, String id, Thing initialProximity) {
+		super(e, id);
 		this.proximity = initialProximity;
 	}
 
-	public Character (IEnvironment e) {
-		this(e, null);
-	}
+	public Character (Environment e, String id) { this(e, id, null); }
+	public Character (Environment e, Thing ip) { this(e, "char", ip); }
+	public Character (Environment e) { this(e, "char", null); }
 
 	public void walkTo (Thing t, float walkSpeed) {
 		if (t.getEnvironment() != this.getEnvironment()) {
@@ -39,12 +41,21 @@ public final class Character extends Thing {
 	}
 
 	@Override
-	public String toString () {
-		String r = "Main character";
-		if (this.proximity != null) {
-			r += ", who is near " + this.proximity.toString();
+	protected void initializeFromSettings (HashMap<String, String> settings) {
+		if (settings.containsKey("initially-near")) {
+			Thing near = this.getEnvironment()
+				.getThingByID(settings.get("initially-near"));
+			this.walkTo(near, 0.0f);
 		}
-		return r;
+	}
+
+	@Override
+	public String toString () {
+		String result = "Main character";
+		if (this.proximity != null) {
+			result += ", who is near " + this.proximity.toString();
+		}
+		return result;
 	}
 
 	@Override

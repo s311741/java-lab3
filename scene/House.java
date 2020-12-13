@@ -1,18 +1,29 @@
 package scene;
 
+import java.util.HashMap;
+
 public final class House extends Thing {
 	private Thing roofAttachment = null; // What's atop the roof
 
-	public House (IEnvironment e) {
-		super(e);
-	}
+	public House (Environment e, String id) { super(e, id); }
+	public House (Environment e) { super(e, "house"); }
 
 	public void setRoofAttachment (Thing t) {
 		this.roofAttachment = t;
+		t.isRootElement = false;
 	}
 
 	public Thing getRoofAttachment () {
 		return this.roofAttachment;
+	}
+
+	@Override
+	protected void initializeFromSettings (HashMap<String, String> settings) {
+		if (settings.containsKey("attachment")) {
+			Thing att = this.getEnvironment()
+				.getThingByID(settings.get("attachment"));
+			this.setRoofAttachment(att);
+		}
 	}
 
 	@Override

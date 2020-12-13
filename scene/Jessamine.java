@@ -1,14 +1,13 @@
 package scene;
 
 public final class Jessamine extends Thing {
-	public Jessamine (IEnvironment e) {
-		super(e);
-	}
+	public Jessamine (Environment e, String id) { super(e, id); }
+	public Jessamine (Environment e) { this(e, "jessamine"); }
 
 	@Override
 	public String toString () {
-		IEnvironment.Season s = this.env.season();
-		boolean isBlossoming = (s == IEnvironment.Season.SPRING || s == IEnvironment.Season.SUMMER);
+		Environment.Season s = this.env.season();
+		boolean isBlossoming = (s == Environment.Season.SPRING || s == Environment.Season.SUMMER);
 		return (isBlossoming ? "blossoming " : "") + "jessamine";
 	}
 

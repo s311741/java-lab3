@@ -1,9 +1,8 @@
 package scene;
 
 public final class Flag extends Thing {
-	public Flag (IEnvironment e) {
-		super(e);
-	}
+	public Flag (Environment e, String id) { super(e, id); }
+	public Flag (Environment e) { this(e, "flag"); }
 
 	@Override
 	public String toString () {

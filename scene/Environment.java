@@ -1,18 +1,31 @@
 package scene;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 
 public final class Environment implements IEnvironment {
-	private ArrayList<Thing> contents;
+	private HashMap<String, Thing> contents;
 
 	private float vibrAmp;
 	private Thing vibrSrc;
 
 	public Environment () {
-		this.contents = new ArrayList<Thing>();
+		this.contents = new HashMap<String, Thing>();
 		this.vibrAmp = 0.0f;
 		this.vibrSrc = null;
+	}
+
+	public Environment (BufferedReader br) {
+		this();
+		try {
+			while (br.ready()) {
+				Thing.newFromFile(this, br);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -21,16 +34,27 @@ public final class Environment implements IEnvironment {
 		if (e != null && e != this) {
 			throw new RuntimeException("Tried to add something to several environments at once");
 		}
-		this.contents.add(t);
+
+		if (this.contents.containsKey(t.getID())) {
+			throw new RuntimeException("Tried to add two objects with same IDs");
+		}
+		this.contents.put(t.getID(), t);
 	}
 
 	public void print (PrintStream s) {
 		s.println("Environment contains:");
-		for (Thing t: this.contents) {
+		for (Thing t: this.contents.values()) {
 			if (t.isRootElement) {
 				s.println("- " + t.toString());
 			}
 		}
+	}
+
+	public Thing getThingByID (String id) {
+		if (this.contents.containsKey(id)) {
+			return this.contents.get(id);
+		}
+		return null;
 	}
 
 	@Override
@@ -67,7 +91,7 @@ public final class Environment implements IEnvironment {
 	@Override
 	public int hashCode () {
 		int hash = this.getClass().hashCode() ^ this.contents.size();
-		for (Thing t: this.contents) {
+		for (Thing t: this.contents.values()) {
 			hash ^= t.hashCode() + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		}
 		return hash;

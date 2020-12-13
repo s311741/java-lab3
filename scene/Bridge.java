@@ -1,10 +1,18 @@
 package scene;
 
+import java.util.HashMap;
+
 public final class Bridge extends Thing implements IColored {
 	private Color color;
 
-	public Bridge (IEnvironment e) {
-		super(e);
+	public Bridge (Environment e, String id) { super(e, id); }
+	public Bridge (Environment e) { super(e, "bridge"); }
+
+	@Override
+	protected void initializeFromSettings (HashMap<String, String> settings) {
+		if (settings.containsKey("color")) {
+			this.setColor(Color.valueOf(settings.get("color")));
+		}
 	}
 
 	@Override

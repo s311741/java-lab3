@@ -1,9 +1,8 @@
 package scene;
 
 public final class River extends Thing {
-	public River (IEnvironment e) {
-		super(e);
-	}
+	public River (Environment e, String id) { super(e, id); }
+	public River (Environment e) { this(e, "river"); }
 
 	@Override
 	public String toString () {
