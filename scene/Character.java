@@ -15,19 +15,10 @@ public final class Character extends Thing {
 	public Character (Environment e) { this(e, "char", null); }
 
 	public void walkTo (Thing t, float walkSpeed) {
-		if (t.getEnvironment() != this.getEnvironment()) {
-			throw new RuntimeException("Tried to walk towards somewhere in another environment");
-		}
-		if (t == this) {
-			throw new RuntimeException("Tried to walk towards themselves");
-		}
-		if (t == null) {
-			throw new RuntimeException("Tried to walk towards nowhere");
-		}
-
-		if (this.proximity == t) {
-			// Already there
-			return;
+		if (t == null || t == this
+		 || t.getEnvironment() != this.getEnvironment()
+		 || t == this.proximity) {
+			throw new IllegalArgumentException( "Character cannot walk towards " + t.toString());
 		}
 
 		this.proximity = t;

@@ -1,5 +1,7 @@
 package scene;
 
+import java.io.Serializable;
+
 public enum Color {
 	BLACK,
 	WHITE,

@@ -28,13 +28,17 @@ public abstract class Thing {
 		return this.id;
 	}
 
-
 	static HashMap<String, Class> derived;
 	private static void registerThingClass (String name) {
+		String packageName = Thing.class.getPackage().toString();
+		packageName = packageName.substring(8, packageName.length());
+
+		final String realClassName = packageName + "." + name;
+
 		try {
-			derived.put(name, Thing.class.getClassLoader().loadClass("scene." + name));
+			derived.put(name, Thing.class.getClassLoader().loadClass(realClassName));
 		} catch (ClassNotFoundException e) {
-			System.err.println("Class " + name + " not found");
+			System.err.println("Class " + realClassName + " not found");
 			System.exit(1);
 		}
 	}
@@ -66,6 +70,11 @@ public abstract class Thing {
 					break;
 				}
 				tokens = line.split("=");
+
+				if (tokens.length < 2) {
+					continue;
+				}
+
 				settings.put(tokens[0], tokens[1]);
 				if (!br.ready()) {
 					break;
@@ -80,6 +89,7 @@ public abstract class Thing {
 		catch (InstantiationException e) { e.printStackTrace(); }
 		catch (InvocationTargetException e) { e.printStackTrace(); }
 		catch (IllegalAccessException e) { e.printStackTrace(); }
+
 		System.exit(1);
 		// Tech like __attribute__((noreturn)) isn't quite there yet I guess
 		return null;
@@ -90,6 +100,6 @@ public abstract class Thing {
 
 	@Override
 	public int hashCode () {
-		return super.hashCode() ^ this.getClass().hashCode() ^ this.id.hashCode();
+		return this.getClass().hashCode() ^ this.id.hashCode();
 	}
 }
