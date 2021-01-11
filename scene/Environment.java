@@ -21,7 +21,11 @@ public final class Environment implements IEnvironment {
 		this();
 		try {
 			while (br.ready()) {
-				Thing.newFromFile(this, br);
+				try {
+					Thing.newFromFile(this, br);
+				} catch (BadSettingsException e) {
+					System.out.println(e.getMessage());
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

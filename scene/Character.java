@@ -8,32 +8,34 @@ public final class Character extends Thing {
 	public Character (Environment e, String id, Thing initialProximity) {
 		super(e, id);
 		this.proximity = initialProximity;
+
+		this.addSetting("initially-near", (String s) -> {
+			Thing near = this.getEnvironment().getThingByID(s);
+			this.proximity = near;
+		});
 	}
 
 	public Character (Environment e, String id) { this(e, id, null); }
-	public Character (Environment e, Thing ip) { this(e, "char", ip); }
+	public Character (Environment e, Thing initialProximity) { this(e, "char", initialProximity); }
 	public Character (Environment e) { this(e, "char", null); }
 
-	public void walkTo (Thing t, float walkSpeed) {
-		if (t.getEnvironment() != this.getEnvironment()) {
-			throw new RuntimeException("Tried to walk towards somewhere in another environment");
-		}
-		if (t == this) {
-			throw new RuntimeException("Tried to walk towards themselves");
-		}
-		if (t == null) {
-			throw new RuntimeException("Tried to walk towards nowhere");
+	public void walkTo (Thing target, float walkSpeed) {
+		if (target == null || target == this
+		 || target.getEnvironment() != this.getEnvironment()
+		 || target == this.proximity) {
+			throw new IllegalArgumentException("Character cannot walk towards " + target.toString());
 		}
 
-		if (this.proximity == t) {
-			// Already there
-			return;
-		}
-
-		this.proximity = t;
+		this.proximity = target;
 
 		// Walking somewhere creates vibration over there
 		this.env.createVibrationAt(this.proximity, (float) Math.pow(walkSpeed, 2.0));
+
+		Character policeman = (Character) this.getEnvironment().getThingByID("policeman");
+		if (policeman != null && policeman != this && policeman.nearWhat() == target) {
+			// A policeman is there; we are abducted
+			throw new AbductedAmidstWalkingException(this, policeman, target);
+		}
 	}
 
 	public Thing nearWhat () {
@@ -41,17 +43,8 @@ public final class Character extends Thing {
 	}
 
 	@Override
-	protected void initializeFromSettings (HashMap<String, String> settings) {
-		if (settings.containsKey("initially-near")) {
-			Thing near = this.getEnvironment()
-				.getThingByID(settings.get("initially-near"));
-			this.walkTo(near, 0.0f);
-		}
-	}
-
-	@Override
 	public String toString () {
-		String result = "Main character";
+		String result = "character \'" + this.getID() + '\'';
 		if (this.proximity != null) {
 			result += ", who is near " + this.proximity.toString();
 		}

@@ -5,8 +5,11 @@ import java.util.HashMap;
 public final class House extends Thing {
 	private Thing roofAttachment = null; // What's atop the roof
 
-	public House (Environment e, String id) { super(e, id); }
-	public House (Environment e) { super(e, "house"); }
+	public House (Environment e, String id) {
+		super(e, id);
+		this.addSetting("attachment", (String s) -> { this.setRoofAttachment(this.getEnvironment().getThingByID(s)); });
+	}
+	public House (Environment e) { this(e, "house"); }
 
 	public void setRoofAttachment (Thing t) {
 		this.roofAttachment = t;
@@ -18,19 +21,11 @@ public final class House extends Thing {
 	}
 
 	@Override
-	protected void initializeFromSettings (HashMap<String, String> settings) {
-		if (settings.containsKey("attachment")) {
-			Thing att = this.getEnvironment()
-				.getThingByID(settings.get("attachment"));
-			this.setRoofAttachment(att);
-		}
-	}
-
-	@Override
 	public String toString () {
 		String result = "house";
-		if (roofAttachment != null)
+		if (roofAttachment != null) {
 			result += " with " + roofAttachment.toString() + " atop its roof";
+		}
 		return result;
 	}
 

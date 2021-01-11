@@ -20,11 +20,17 @@ public class Main {
 		s.println("Before our arrival:\n");
 		env.print(s);
 
-		Character ch = (Character) env.getThingByID("main-char");
-		River river = (River) env.getThingByID("river");
+		Character policeman = (Character) env.getThingByID("policeman");
+		Character mainCharacter = (Character) env.getThingByID("snufkin");
 
-		ch.walkTo(river, 10.0f);
-		s.println("\nAfter our arrival:\n");
-		env.print(s);
+		try {
+			mainCharacter.walkTo(env.getThingByID("river"), 10.0f);
+		} catch (AbductedAmidstWalkingException e) {
+			s.println();
+			s.println(e.getMessage());
+		} finally {
+			s.println("\nAfter our arrival:\n");
+			env.print(s);
+		}
 	}
 }
