@@ -25,7 +25,6 @@ public final class Character extends Thing {
 		 || target == this.proximity) {
 			throw new IllegalArgumentException("Character cannot walk towards " + target.toString());
 		}
-
 		this.proximity = target;
 
 		// Walking somewhere creates vibration over there
