@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 
 public class Main {
 	public static void main (String[] args) {
-		Environment env;
+		final Environment env;
 		try {
 			env = new Environment(new BufferedReader(new FileReader("env.ini")));
 		} catch (FileNotFoundException e) {
@@ -16,21 +16,20 @@ public class Main {
 			return;
 		}
 
-		PrintStream s = System.out;
-		s.println("Before our arrival:\n");
-		env.print(s);
+		System.out.println("Before our arrival:\n");
+		env.print(System.out);
 
-		Character policeman = (Character) env.getThingByID("policeman");
-		Character mainCharacter = (Character) env.getThingByID("snufkin");
+		final Character policeman = (Character) env.getThingByID("policeman");
+		final Character mainCharacter = (Character) env.getThingByID("snufkin");
 
 		try {
 			mainCharacter.walkTo(env.getThingByID("river"), 10.0f);
 		} catch (AbductedAmidstWalkingException e) {
-			s.println();
-			s.println(e.getMessage());
+			System.out.println();
+			System.out.println(e.getMessage());
 		} finally {
-			s.println("\nAfter our arrival:\n");
-			env.print(s);
+			System.out.println("\nAfter our arrival:\n");
+			env.print(System.out);
 		}
 	}
 }
